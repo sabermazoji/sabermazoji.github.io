@@ -1,0 +1,1 @@
+{"version":3,"sources":["css ./node_modules/razzle/node_modules/css-loader??ref--8-1!./node_modules/postcss-loader/src??postcss!./src/components/elemenets/styles/DataPicker.css"],"names":[],"mappings":"AAAA,iBACA,2BACA","file":"6.f30ad47b.chunk.css","sourcesContent":[".custom-calendar{\r\n    font-family: Vazir !important;\r\n}"]}

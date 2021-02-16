@@ -76,10 +76,10 @@ self.addEventListener("activate", (event) => {
       )
   );
 });
-// navigator.serviceWorker.onmessage = (event) => {
-//   const message = JSON.parse(event.data);
-//   if (message && message.type.includes("/api/users")) {
-//     console.log("List of attendees to date", message.data);
-//     renderAttendees(message.data);
-//   }
-// };
+navigator.serviceWorker.onmessage = (event) => {
+  const message = JSON.parse(event.data);
+  if (message && message.type.includes("/api/users")) {
+    console.log("List of attendees to date", message.data);
+    renderAttendees(message.data);
+  }
+};

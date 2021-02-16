@@ -38,6 +38,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	//TODO: Etape 2 - Installation du Service Worker au chargement du document
 
+	let deferredPrompt; // Allows to show the install prompt
+	const installButton = document.getElementById("install_button");
+	
+	
+	function installApp() {
+	  // Show the prompt
+	  deferredPrompt.prompt();
+	  installButton.disabled = true;
+	
+	  // Wait for the user to respond to the prompt
+	  deferredPrompt.userChoice.then(choiceResult => {
+		if (choiceResult.outcome === "accepted") {
+		  console.log("PWA setup accepted");
+		  installButton.hidden = true;
+		} else {
+		  console.log("PWA setup rejected");
+		}
+		installButton.disabled = false;
+		deferredPrompt = null;
+	  });
+	}
+	window.addEventListener("beforeinstallprompt", e => {
+	  console.log("beforeinstallprompt fired");
+	  // Prevent Chrome 76 and earlier from automatically showing a prompt
+	  e.preventDefault();
+	  // Stash the event so it can be triggered later.
+	  deferredPrompt = e;
+	  // Show the install button
+	  installButton.hidden = false;
+	  installButton.addEventListener("click", installApp);
+	});
 	//TODO: Etape 4 - Réception de messages depuis le Service Worker
 });
 if ("serviceWorker" in navigator) {
@@ -50,35 +81,3 @@ if ("serviceWorker" in navigator) {
         console.error("Error registering the Service Worker: ", error);
       });
   }
-
-  let deferredPrompt; // Allows to show the install prompt
-  const installButton = document.getElementById("install_button");
-  
-  
-  function installApp() {
-	// Show the prompt
-	deferredPrompt.prompt();
-	installButton.disabled = true;
-  
-	// Wait for the user to respond to the prompt
-	deferredPrompt.userChoice.then(choiceResult => {
-	  if (choiceResult.outcome === "accepted") {
-		console.log("PWA setup accepted");
-		installButton.hidden = true;
-	  } else {
-		console.log("PWA setup rejected");
-	  }
-	  installButton.disabled = false;
-	  deferredPrompt = null;
-	});
-  }
-  window.addEventListener("beforeinstallprompt", e => {
-	console.log("beforeinstallprompt fired");
-	// Prevent Chrome 76 and earlier from automatically showing a prompt
-	e.preventDefault();
-	// Stash the event so it can be triggered later.
-	deferredPrompt = e;
-	// Show the install button
-	installButton.hidden = false;
-	installButton.addEventListener("click", installApp);
-  });
